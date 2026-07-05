@@ -84,7 +84,6 @@ kanji-lint manuscript.md --allow-words allow-words.txt
 ```text
 # コメント行は無視されます
 齟齬
-樋口
 ```
 
 `--allow-words` で指定した語句に含まれる漢字は、その語句として出現した場合だけ検出対象から外れます。
