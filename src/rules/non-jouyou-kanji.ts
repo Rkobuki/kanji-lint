@@ -6,10 +6,14 @@ import { isIgnored } from "../markdown/ignored-ranges.js";
 
 export const RULE_ID = "non_jouyou_kanji";
 
-const HAN_RE = /\p{Script=Han}/u;
+// Script=Han alone also matches non-kanji Han-block symbols such as 々 (U+3005,
+// General_Category=Lm) and 〇 (U+3007, General_Category=Nl) — iteration marks and
+// the ideographic zero, not kanji themselves. Real kanji are General_Category=Lo,
+// so requiring both excludes these false positives without a maintained blocklist.
+const KANJI_RE = /(?=\p{Script=Han})\p{General_Category=Lo}/u;
 
 export function isKanji(char: string): boolean {
-  return HAN_RE.test(char);
+  return KANJI_RE.test(char);
 }
 
 export type Span = [start: number, end: number];

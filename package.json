@@ -1,6 +1,6 @@
 {
   "name": "@rkobuki/kanji-lint",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Detect kanji outside the joyo kanji list in text and Markdown manuscripts.",
   "type": "module",
   "engines": {

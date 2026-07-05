@@ -10,6 +10,18 @@ describe("check() core rule behavior", () => {
     expect(result.issues[1]).toMatchObject({ text: "齬", index: 1, line: 1, column: 2 });
   });
 
+  it("does not flag ideographic iteration marks or the ideographic zero as kanji", () => {
+    // 々 (U+3005) and 〻 (U+303B) are General_Category=Lm, 〇 (U+3007) is Nl —
+    // all Script=Han but not actual kanji, unlike real jouyou/non-jouyou kanji (Lo).
+    const result = check("人々、年々、〇〻。", { format: "text" });
+    expect(result.issues).toHaveLength(0);
+  });
+
+  it("still flags a genuine non-jouyou kanji adjacent to an iteration mark", () => {
+    const result = check("齟々", { format: "text" });
+    expect(result.issues.map((i) => i.text)).toEqual(["齟"]);
+  });
+
   it("reports zero issues for jouyou-only text", () => {
     const result = check("日本語のテスト", { format: "text" });
     expect(result.ok).toBe(true);
